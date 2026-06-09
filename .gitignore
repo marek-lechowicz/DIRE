@@ -159,6 +159,7 @@ cython_debug/
 
 data
 *.tar.gz
+*.tar.xz
 *.jpg
 *.png
 *.csv
@@ -167,3 +168,6 @@ backup.sh
 .tarignore
 pyrightconfig.json
 models
+
+eval_work/
+dire_models/

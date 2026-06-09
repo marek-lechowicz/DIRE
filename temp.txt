@@ -1,0 +1,12 @@
+cd /home/marek/projects/fake_flickr_sota/DIRE
+rm -rf eval_work/ff_jpeg_test eval_work/ff_jpeg_test.csv
+CUDA_VISIBLE_DEVICES=0 .venv/bin/python test_fake_flickr.py \
+  --ckpt dire_models/lsun_adm.pth \
+  --diffusion-ckpt /home/marek/Downloads/256x256_diffusion_uncond.pt \
+  --generators flux_1_dev \
+  --debug --debug-samples 24 \
+  --diffusion-batch-size 12 \
+  --work-dir eval_work/ff_jpeg_test \
+  --results-csv eval_work/ff_jpeg_test.csv 2>&1 | grep -E "jpeg_equalize|staged|: ACC=|Results written"
+echo "=== with JPEG equalization (q90 on webp fakes) ==="
+column -t -s, eval_work/ff_jpeg_test.csv

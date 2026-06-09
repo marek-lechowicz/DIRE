@@ -137,6 +137,12 @@ def main():
             fn_save = os.path.basename(paths[i])
             os.makedirs(recons_save_dir, exist_ok=True)
             os.makedirs(dire_save_dir, exist_ok=True)
+            # BUG / DATA LEAKAGE IDENTIFIED ---
+            # Using the original image's extension (fn_save = os.path.basename(paths[i]))
+            # causes cv2.imwrite to apply the same compression algorithm to the DIRE map 
+            # (e.g. .jpg = lossy JPEG, .png = lossless PNG, .webp = lossy WebP).
+            # This is the original bug from the authors of DIRE that causes the ResNet 
+            # to learn compression artifacts instead of actual DIRE features.
             cv2.imwrite(
                 f"{dire_save_dir}/{fn_save}", cv2.cvtColor(dire[i].cpu().numpy().astype(np.uint8), cv2.COLOR_RGB2BGR)
             )
